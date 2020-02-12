@@ -1,8 +1,11 @@
+
 import java.io.IOException;
+import java.util.concurrent.Phaser;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -30,7 +33,7 @@ public class Part1Servlet extends HttpServlet {
         counter++;
         System.out.println("do GET");
 
-        //request.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
+        request.getServletContext().getRequestDispatcher("/WEB-INF/part1.jsp").forward(request, response);
         // response.sendRedirect("ShoppingList");
     }
 
@@ -42,8 +45,16 @@ public class Part1Servlet extends HttpServlet {
         counter++;
         System.out.println("do Post");
 
-        //request.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-        // response.sendRedirect("ShoppingList");
+        HttpSession session = request.getSession();
+        String phrase = request.getParameter("fldPhrase");
+        session.setAttribute("phrase", phrase);
+        if (phrase != null && !phrase.equals("")) {
+            request.getServletContext().getRequestDispatcher("/WEB-INF/part1.jsp").forward(request, response);
+            // response.sendRedirect("ShoppingList");
+        } else {
+            request.getServletContext().getRequestDispatcher("/WEB-INF/part1.jsp").forward(request, response);
+        }
+
     }
 
     @Override

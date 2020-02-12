@@ -1,9 +1,17 @@
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -31,8 +39,12 @@ public class Part2Servlet extends HttpServlet {
         counter++;
         System.out.println("do GET");
 
-        //request.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-        // response.sendRedirect("ShoppingList");
+        String message = "";
+        String readAge = readAge(request);
+        message = "Average age: " + readAge;
+        request.setAttribute("message", message);
+        System.out.println(message);
+        request.getRequestDispatcher("/WEB-INF/part2.jsp").forward(request, response);
     }
 
     @Override
@@ -43,13 +55,54 @@ public class Part2Servlet extends HttpServlet {
         counter++;
         System.out.println("do Post");
 
-        //request.getServletContext().getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-        // response.sendRedirect("ShoppingList");
+        String name = request.getParameter("fldName");
+        String age = request.getParameter("fldAge");
+
+        String path = getServletContext().getRealPath("/WEB-INF/list.txt");
+        PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(path, true)));
+        String line = name + "," + age + "\r\n";
+        System.out.println(line);
+        pw.write(line);
+        pw.flush();
+
+        String message = "";
+        String readAge = readAge(request);
+        message = "Average age: " + readAge;
+        request.setAttribute("message", message);
+        request.getRequestDispatcher("/WEB-INF/part2.jsp").forward(request, response);
     }
 
+    
+    
+    
     @Override
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String readAge(HttpServletRequest request) throws FileNotFoundException {
+        HttpSession session = request.getSession();
+        BufferedReader br = null;
+        double totalAge = 0;
+        int countAge = 0;
+        String temp;
+
+        String path = request.getServletContext().getRealPath("/WEB-INF/list.txt");
+        br = new BufferedReader(new FileReader(new File(path)));
+
+        try {
+            while ((temp = br.readLine()) != null) {
+                countAge++;
+                System.out.println("countAge=======>" + countAge);
+                String[] splitedLine = temp.split(",");
+                totalAge += Integer.parseInt(splitedLine[1]);
+                System.out.println("totalAge=======>" + totalAge);
+            }
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Not found list.txt");
+            return null;
+        }
+        return (totalAge / countAge) + "";
+    }
 
 }

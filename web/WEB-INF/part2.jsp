@@ -14,6 +14,19 @@
     <body>
         <h1>CPRG352 Practice Exam 1</h1>
 
+        <h2>${phrase}</h2>
+
+        <form method="post">
+            Name: <input type="text" name="fldName" value=""><br>
+            Age <input type="text" name="fldAge" value=""><br>
+
+            <button type="submit" name="submit">Add</button>
+        </form>
+
+        ${message}
+        <br>
+        <br>
+        <a href="part1">Part 1</a>
 
 
 
