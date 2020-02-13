@@ -17,8 +17,8 @@
         <h2>${phrase}</h2>
 
         <form method="post">
-            Name: <input type="text" name="fldName" value=""><br>
-            Age <input type="text" name="fldAge" value=""><br>
+            Name: <input type="text" name="fldName" value="" required=""><br>
+            Age <input type="text" name="fldAge" value="" required=""><br>
 
             <button type="submit" name="submit">Add</button>
         </form>
