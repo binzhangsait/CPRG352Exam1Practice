@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html> 
 <html>
     <head>
@@ -25,6 +26,32 @@
 
         ${message}
         <br>
+
+
+
+        <hr>
+
+        <c:if test="${loadlist.size() > 0}" >
+            <table border='1' style='color: red; size: 20px'>
+                <tr >
+                    <td>Name</td>
+                    <td>Age</td>
+                </tr>
+                <c:forEach items="${loadlist}" var="list" >
+
+                    <tr >
+                        <td>${list.name}</td>
+                        <td>${list.age}</td>
+                    </tr>
+
+                </c:forEach>
+
+            </table>
+        </c:if>
+
+
+        <hr>
+
         <br>
         <a href="part1">Part 1</a>
 

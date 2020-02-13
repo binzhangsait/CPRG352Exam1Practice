@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import sun.security.pkcs11.wrapper.Functions;
 
 /**
  *
@@ -46,6 +48,11 @@ public class Part2Servlet extends HttpServlet {
         message = "Average age: " + readAge;
         request.setAttribute("message", message);
         System.out.println(message);
+
+        HttpSession session = request.getSession();
+        ArrayList<Person> loadList = Person.loadList(request);
+        session.setAttribute("loadlist", loadList);
+
         request.getRequestDispatcher("/WEB-INF/part2.jsp").forward(request, response);
     }
 
@@ -74,16 +81,32 @@ public class Part2Servlet extends HttpServlet {
                 String readAge = readAge(request);
                 message = "Average age: " + readAge;
                 request.setAttribute("message", message);
+
+                HttpSession session = request.getSession();
+                ArrayList<Person> loadList = Person.loadList(request);
+                session.setAttribute("loadlist", loadList);
+
                 request.getRequestDispatcher("/WEB-INF/part2.jsp").forward(request, response);
             } else {
                 String message = "Invalid input";
                 request.setAttribute("message", message);
+                
+                  HttpSession session = request.getSession();
+                ArrayList<Person> loadList = Person.loadList(request);
+                session.setAttribute("loadlist", loadList);
+                
+                
                 request.getRequestDispatcher("/WEB-INF/part2.jsp").forward(request, response);
             }
         } catch (Exception e) {
             System.out.println("invalid input");
             String message = "Invalid input";
             request.setAttribute("message", message);
+            
+              HttpSession session = request.getSession();
+                ArrayList<Person> loadList = Person.loadList(request);
+                session.setAttribute("loadlist", loadList);
+            
             request.getRequestDispatcher("/WEB-INF/part2.jsp").forward(request, response);
         }
     }
